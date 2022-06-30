@@ -1,0 +1,118 @@
+/*
+** table
+*/
+
+.tkrad-table-header {
+ background-color: lightblue;
+ position: sticky;
+ top: 0;
+ z-index: 0;
+}
+
+.tkrad-table-footer {
+ background-color: lightgrey;
+ position: sticky;
+ top: 0;
+ z-index: 1;
+}
+
+.tkrad-table-driver {
+ min-width: 20px;
+ min-height: 20px;
+}
+
+.tkrad-table-header-cell:hover {
+ color: blue;
+}
+
+.tkrad-table-cell-right {
+ align-content: right;
+ text-align: right;
+}
+
+.tkrad-table-data-row:hover {
+ --opacity: 0.8;
+ color: blue;
+ cursor: pointer;
+}
+
+.tkrad-table-node-row:hover {
+ color: blue;
+ cursor: pointer;
+}
+
+.tkrad-table {
+ display: block;
+ overflow-y: scroll;
+ overflow-x: auto;
+ width: max-content;
+}
+
+:offline-focus {
+ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.8), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.tkrad-table table {
+ width: inherit;
+}
+
+.tkrad-table-header-tools {
+ min-width: 60px;
+}
+
+.tkrad-table-node-tools,
+.tkrad-table-line-tools {
+ display: none;
+}
+
+.tkrad-table-data-row[tkrad-selected] {
+ color: red;
+}
+
+.tkrad-table-node-row[tkrad-selected] {
+ color: red;
+}
+
+.tkrad-table-data-row:hover .tkrad-table-line-tools {
+ display: block;
+}
+
+.tkrad-table-node-row:hover .tkrad-table-node-tools {
+ display: block;
+}
+/*
+.tkrad-table-node-row:nth-child(odd),
+.tkrad-table-empty-row:nth-child(odd),
+.tkrad-table-data-row:nth-child(odd) {
+ background-color: #f2f2f2;
+}
+*/
+
+.tkrad-table-data-widget {
+ background: inherit;
+ font: inherit;
+}
+
+.tkrad-table-column-resizer {
+ top: 0;
+ right: 0;
+ width: 2px;
+ position: absolute;
+ cursor: col-resize;
+ userSelect: none;
+ height: 100%;
+}
+
+.tkrad-table-column-resizer:hover {
+ border-right: 2px solid blue;
+}
+
+.tkrad-table-data-row[tkrad-invalid] {
+ background-color: #ffdedb;
+ }
+
+.tkrad-table-cell-ods[tkrad-invalid-cell] {
+ outline-style: solid;
+ outline-width: 1.5px;
+ outline-color: #f44;
+}
