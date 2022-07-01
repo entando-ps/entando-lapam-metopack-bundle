@@ -7,8 +7,8 @@ customUiPath: ent-lapam-metopack-widget.ftl
 configUi:
   customElement: entando-lapam-metopack-config
   resources:
-    - ent-lapam-metopack/static/js/2.573a9ab1.chunk.js
-    - ent-lapam-metopack/static/js/main.99d06a0b.chunk.js
+    - ent-lapam-metopack/static/js/2.286c9e0d.chunk.js
+    - ent-lapam-metopack/static/js/main.b9660ab1.chunk.js
     - ent-lapam-metopack/static/js/runtime-main.69077a03.js
 
 # entando_resource_injection_point
