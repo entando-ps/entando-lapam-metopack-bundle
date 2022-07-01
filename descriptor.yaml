@@ -1,6 +1,10 @@
 code: ent-lapam-metopack
 description: Lapam Metopack Entando
 components:
+
+  plugins:
+    - plugins/lapam-plugin.yaml
+
   widgets:
     - ui/widgets/widgets-dir/ent-lapam-metopack-widget/ent-lapam-metopack-widget.yaml
 
