@@ -2,6 +2,6 @@ descriptorVersion: v4
 image: entandopsdh/authproxy:0.0.16-SNAPSHOT
 dbms: none
 healthCheckPath: "/actuator/health"
-ingressPath: "lapam-ws"
+ingressPath: "/lapam-ws"
 roles:
   - "lapam-proxy-admin"
