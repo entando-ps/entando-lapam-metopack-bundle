@@ -3,6 +3,7 @@ import "./tkrad.js"
 
 const ATTRIBUTES = {
     modulo: 'modulo',
+    proxy: 'proxy',
 };
 
 
@@ -13,8 +14,8 @@ const permissionResults = {
 }
 
 
-function authRouter(requestedModule, jwtTokenParsed, unauthorizedAction, unauthenticatedAction, authorizedAction) {
-    const checkResult = checkPermissions(requestedModule, jwtTokenParsed)
+function authRouter(requestedModule, jwtTokenParsed, jwtToken, unauthorizedAction, unauthenticatedAction, authorizedAction) {
+    const checkResult = checkPermissions(requestedModule, jwtTokenParsed, jwtToken)
     switch (checkResult.result) {
         case permissionResults.UNAUTHORIZED:
             unauthorizedAction()
@@ -28,9 +29,10 @@ function authRouter(requestedModule, jwtTokenParsed, unauthorizedAction, unauthe
 }
 
 
-function buildRunner(requestedModule, metopackConfig) {
+function buildRunner(requestedModule, metopackConfig, jwtToken) {
     const connectionTokens = metopackConfig.connection.split(":")
 
+    const moduloJwtToken = jwtToken ? "|" + jwtToken : ""
 
     return {
         host: connectionTokens[0],
@@ -38,11 +40,11 @@ function buildRunner(requestedModule, metopackConfig) {
         utente: metopackConfig.utente,
         prog: metopackConfig.prog,
         titolo: "Metopack",
-        modulo: requestedModule
+        modulo: requestedModule + moduloJwtToken
     }
 }
 
-function checkPermissions(requestedModule, jwtTokenParsed) {
+function checkPermissions(requestedModule, jwtTokenParsed, jwtToken) {
     if (!jwtTokenParsed) return {result: permissionResults.UNAUTHENTICATED}
     try {
         var allowedModules = jwtTokenParsed.lapam.metopackcloud.modules
@@ -56,7 +58,7 @@ function checkPermissions(requestedModule, jwtTokenParsed) {
     }
 
     try {
-        var runner = buildRunner(requestedModule, jwtTokenParsed.lapam.metopackcloud)
+        var runner = buildRunner(requestedModule, jwtTokenParsed.lapam.metopackcloud, jwtToken)
     } catch (e) {
         console.error(e)
     }
@@ -95,6 +97,7 @@ class EntandoLapamMetopack extends HTMLElement {
         const keycloak = window.entando.keycloak
 
         const requestedModule = this.getAttribute(ATTRIBUTES.modulo)
+        const proxy = this.getAttribute(ATTRIBUTES.proxy)
         const unauthorizedAction = () => {
             console.log("unauthorizedAction")
             const text = document.createElement("div");
@@ -109,7 +112,7 @@ class EntandoLapamMetopack extends HTMLElement {
             this.render(runner)
         }
 
-        authRouter(requestedModule, keycloak.tokenParsed, unauthorizedAction, unauthenticatedAction, authorizedAction)
+        authRouter(requestedModule, keycloak.tokenParsed, proxy ? keycloak.token : undefined, unauthorizedAction, unauthenticatedAction, authorizedAction)
     }
 
     render(runner) {

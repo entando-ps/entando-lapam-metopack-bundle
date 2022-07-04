@@ -1,6 +1,8 @@
 <#assign wp=JspTaglibs["/aps-core"]>
 <script type="module" src="<@wp.resourceURL />ent-lapam-metopack/static/js/entando-lapam-metopack.js"></script>
+<link href="<@wp.resourceURL />ent-lapam-metopack/static/css/bootstrap.css" rel="stylesheet">
 <link href="<@wp.resourceURL />ent-lapam-metopack/static/css/dropdown.css" rel="stylesheet">
+<link href="<@wp.resourceURL />ent-lapam-metopack/static/css/materialdesignicons.css" rel="stylesheet">
 <link href="<@wp.resourceURL />ent-lapam-metopack/static/css/tkrad.css" rel="stylesheet">
 <link href="<@wp.resourceURL />ent-lapam-metopack/static/css/treeview.css" rel="stylesheet">
 <#-- entando_resource_injection_point -->
