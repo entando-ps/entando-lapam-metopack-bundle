@@ -45,7 +45,7 @@ function buildRunner(requestedModule, metopackConfig, jwtToken, proxy) {
         moduloJwtToken = "|" + jwtToken
         pathToken = "/lapam-ws"
         connectionTokens[0] = window.location.hostname
-        connectionTokens[1] = "8081"
+        connectionTokens[1] = "80"
     }
 
     return {
