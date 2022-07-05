@@ -1,5 +1,13 @@
 import "./tkrad.js"
 
+/*
+This is the Custom element used by Entando (check the .ftl file inside the bundle dir at src level)
+the interface is:
+<entando-lapam-metopack modulo=<module key> proxy=true|false (if not defined it is false) ></entando-lapam-metopack>
+
+module key is the value to load the tcl module in the BE side of the system (e.g. "report/bilancioPeriodico", "TkMastrini" ...)
+Proxy allows the custom element to use or not its ws proxy implemented as bundle MS, that is needed to validating the jwt token
+ */
 
 const ATTRIBUTES = {
     modulo: 'modulo',
@@ -137,4 +145,4 @@ class EntandoLapamMetopack extends HTMLElement {
     }
 }
 
-customElements.get('entando-lapam-metopack') || customElements.define("entando-lapam-metopack", EntandoLapamMetopack)
+customElements.get('©') || customElements.define("entando-lapam-metopack", EntandoLapamMetopack)
