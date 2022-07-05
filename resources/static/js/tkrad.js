@@ -348,11 +348,11 @@ customElements.define("tkrad-digital", class extends HTMLElement {
 		script += " }"
 		this.setScript(btoa(script))
 		this.consoleMode(false)
-		this.setWebsocket(runner.host, runner.port)
+		this.setWebsocket(runner.host, runner.port, runner.path)
 		this.wsEvent = wsevent
 	}
-	setWebsocket ( host, port ) {
-		this.wsUrl = "ws://" + host + ":" + port
+	setWebsocket ( host, port, path ) {
+		this.wsUrl = "ws://" + host + ":" + port + path
 	}
 	connectedCallback () {
 		setTimeout ( () => {
@@ -1328,7 +1328,7 @@ customElements.define("tkrad-frame", class extends tkrad.tkradWindow {
 					ele.style["display"] = "flex"
 					this.tool.appendChild(btobj)
 				}
-			}	
+			}
 		}
 		ele.appendChild(this.tool)
 	}
@@ -1390,7 +1390,7 @@ customElements.define("tkrad-labelframe", class extends tkrad.tkradWindow {
 					ele.style["display"] = "flex"
 					this.tool.appendChild(btobj)
 				}
-			}	
+			}
 		}
 		ele.appendChild(this.tool)
 	}
@@ -1457,7 +1457,7 @@ customElements.define("tkrad-toolbar", class extends tkrad.tkradWindow {
 				button.runCommand = () => { this.runButton(button) }
 				if ( parent.classList.contains('tkrad-apptool') ) {
 					this.buttonList.push(input.template)
-				} 
+				}
 				if ( input.menu == "true" ) {
 					input.icon = 'menu'
 				}
@@ -1642,7 +1642,7 @@ customElements.define("tkrad-systool", class extends tkrad.tkradWindow {
 		button.profileButton({ icon: "menu", text: input.text })
 		button.runCommand = cmd
 		this.appendChild(button)
-		return button	
+		return button
 	}
 });
 //
@@ -1843,7 +1843,7 @@ customElements.define("tkrad-gadget-date", class extends HTMLElement {
 	constructor () {
 		super()
 		this.button = document.createElement("button")
-		this.button.classList.add("tkrad-button-gadget")	
+		this.button.classList.add("tkrad-button-gadget")
 		this.button.classList.add("mdi", tkrad.getIcon("event"))
 	}
 	addTo(obj) {
@@ -1856,11 +1856,11 @@ customElements.define("tkrad-gadget-date", class extends HTMLElement {
 			span.appendChild(obj.entryField)
 			parent.appendChild(span)
 		}
-		span.appendChild(this.button)	
+		span.appendChild(this.button)
 		this.button.onclick = (() => {
 			let elem = document.createElement("tkrad-datepicker")
-			elem.date = obj.getValue() 
-			elem.runCommand = this.runCommand 
+			elem.date = obj.getValue()
+			elem.runCommand = this.runCommand
 			let jsdata = new Date()
 			if ( elem.date != "" ) {
 				let yy = Math.trunc( elem.date / 10000 )
@@ -1940,7 +1940,7 @@ customElements.define("tkrad-entry", class extends tkrad.tkradWindow {
 		obj.returnMtpDate((date) => {
 			if ( date != null ) { this.setValueFromTcl(date) }
 			this.setWidgetFocus()
-		})	
+		})
 	}
 	switchPasswordMode ( obj ) {
 		if ( obj.showData ) {
@@ -2460,20 +2460,20 @@ customElements.define("tkrad-datepicker", class extends HTMLElement {
 		let nextcell = row.insertCell()
 		let prev = document.createElement("tkrad-button")
 		prev.runCommand = () => {
-			let date = new Date(this.year, this.month, 1, 12, 0, 0)	
+			let date = new Date(this.year, this.month, 1, 12, 0, 0)
 			date.setMonth(date.getMonth() - 1)
-			this.buildCalendar(date.getFullYear(), date.getMonth())	
+			this.buildCalendar(date.getFullYear(), date.getMonth())
 		}
 		let next = document.createElement("tkrad-button")
 		next.runCommand = () => {
-			let date = new Date(this.year, this.month, 1, 12, 0, 0)	
+			let date = new Date(this.year, this.month, 1, 12, 0, 0)
 			date.setMonth(date.getMonth() + 1)
-			this.buildCalendar(date.getFullYear(), date.getMonth())	
+			this.buildCalendar(date.getFullYear(), date.getMonth())
 		}
 		prevcell.appendChild(prev)
 		nextcell.appendChild(next)
-		prev.profileButton({ icon: "left"})	
-		next.profileButton({ icon: "right"})	
+		prev.profileButton({ icon: "left"})
+		next.profileButton({ icon: "right"})
 		cell.setAttribute("colspan", "6")
 		cell.innerHTML = "Header mese anno e avanzamento"
 		this.dateDesc = cell

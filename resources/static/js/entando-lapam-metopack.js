@@ -22,8 +22,8 @@ const permissionResults = {
 }
 
 
-function authRouter(requestedModule, jwtTokenParsed, jwtToken, unauthorizedAction, unauthenticatedAction, authorizedAction) {
-    const checkResult = checkPermissions(requestedModule, jwtTokenParsed, jwtToken)
+function authRouter(requestedModule, jwtTokenParsed, jwtToken, unauthorizedAction, unauthenticatedAction, authorizedAction, proxy) {
+    const checkResult = checkPermissions(requestedModule, jwtTokenParsed, jwtToken, proxy)
     switch (checkResult.result) {
         case permissionResults.UNAUTHORIZED:
             unauthorizedAction()
@@ -37,14 +37,21 @@ function authRouter(requestedModule, jwtTokenParsed, jwtToken, unauthorizedActio
 }
 
 
-function buildRunner(requestedModule, metopackConfig, jwtToken) {
+function buildRunner(requestedModule, metopackConfig, jwtToken, proxy) {
     const connectionTokens = metopackConfig.connection.split(":")
-
-    const moduloJwtToken = jwtToken ? "|" + jwtToken : ""
+    var moduloJwtToken = ""
+    var pathToken = ""
+    if (proxy) {
+        moduloJwtToken = "|" + jwtToken
+        pathToken = "/lapam-ws"
+        connectionTokens[0] = window.location.hostname
+        connectionTokens[1] = window.location.port
+    }
 
     return {
         host: connectionTokens[0],
         port: connectionTokens[1],
+        path: pathToken,
         utente: metopackConfig.utente,
         prog: metopackConfig.prog,
         titolo: "Metopack",
@@ -52,7 +59,7 @@ function buildRunner(requestedModule, metopackConfig, jwtToken) {
     }
 }
 
-function checkPermissions(requestedModule, jwtTokenParsed, jwtToken) {
+function checkPermissions(requestedModule, jwtTokenParsed, jwtToken, proxy) {
     if (!jwtTokenParsed) return {result: permissionResults.UNAUTHENTICATED}
     try {
         var allowedModules = jwtTokenParsed.lapam.metopackcloud.modules
@@ -66,7 +73,7 @@ function checkPermissions(requestedModule, jwtTokenParsed, jwtToken) {
     }
 
     try {
-        var runner = buildRunner(requestedModule, jwtTokenParsed.lapam.metopackcloud, jwtToken)
+        var runner = buildRunner(requestedModule, jwtTokenParsed.lapam.metopackcloud, jwtToken, proxy)
     } catch (e) {
         console.error(e)
     }
@@ -120,7 +127,7 @@ class EntandoLapamMetopack extends HTMLElement {
             this.render(runner)
         }
 
-        authRouter(requestedModule, keycloak.tokenParsed, proxy ? keycloak.token : undefined, unauthorizedAction, unauthenticatedAction, authorizedAction)
+        authRouter(requestedModule, keycloak.tokenParsed, proxy ? keycloak.token : undefined, unauthorizedAction, unauthenticatedAction, authorizedAction, proxy)
     }
 
     render(runner) {
