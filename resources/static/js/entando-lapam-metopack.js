@@ -1,13 +1,5 @@
 import "./tkrad.js"
 
-/*
-This is the Custom element used by Entando (check the .ftl file inside the bundle dir at src level)
-the interface is:
-<entando-lapam-metopack modulo=<module key> proxy=true|false (if not defined it is false) ></entando-lapam-metopack>
-
-module key is the value to load the tcl module in the BE side of the system (e.g. "report/bilancioPeriodico", "TkMastrini" ...)
-Proxy allows the custom element to use or not its ws proxy implemented as bundle MS, that is needed to validating the jwt token
- */
 
 const ATTRIBUTES = {
     modulo: 'modulo',
@@ -22,8 +14,8 @@ const permissionResults = {
 }
 
 
-function authRouter(requestedModule, jwtTokenParsed, jwtToken, unauthorizedAction, unauthenticatedAction, authorizedAction, proxy) {
-    const checkResult = checkPermissions(requestedModule, jwtTokenParsed, jwtToken, proxy)
+function authRouter(requestedModule, jwtTokenParsed, jwtToken, unauthorizedAction, unauthenticatedAction, authorizedAction) {
+    const checkResult = checkPermissions(requestedModule, jwtTokenParsed, jwtToken)
     switch (checkResult.result) {
         case permissionResults.UNAUTHORIZED:
             unauthorizedAction()
@@ -37,21 +29,14 @@ function authRouter(requestedModule, jwtTokenParsed, jwtToken, unauthorizedActio
 }
 
 
-function buildRunner(requestedModule, metopackConfig, jwtToken, proxy) {
+function buildRunner(requestedModule, metopackConfig, jwtToken) {
     const connectionTokens = metopackConfig.connection.split(":")
-    var moduloJwtToken = ""
-    var pathToken = ""
-    if (proxy) {
-        moduloJwtToken = "|" + jwtToken
-        pathToken = "/lapam-ws"
-        connectionTokens[0] = window.location.hostname
-        connectionTokens[1] = "80"
-    }
+
+    const moduloJwtToken = jwtToken ? "|" + jwtToken : ""
 
     return {
         host: connectionTokens[0],
         port: connectionTokens[1],
-        path: pathToken,
         utente: metopackConfig.utente,
         prog: metopackConfig.prog,
         titolo: "Metopack",
@@ -59,7 +44,7 @@ function buildRunner(requestedModule, metopackConfig, jwtToken, proxy) {
     }
 }
 
-function checkPermissions(requestedModule, jwtTokenParsed, jwtToken, proxy) {
+function checkPermissions(requestedModule, jwtTokenParsed, jwtToken) {
     if (!jwtTokenParsed) return {result: permissionResults.UNAUTHENTICATED}
     try {
         var allowedModules = jwtTokenParsed.lapam.metopackcloud.modules
@@ -73,7 +58,7 @@ function checkPermissions(requestedModule, jwtTokenParsed, jwtToken, proxy) {
     }
 
     try {
-        var runner = buildRunner(requestedModule, jwtTokenParsed.lapam.metopackcloud, jwtToken, proxy)
+        var runner = buildRunner(requestedModule, jwtTokenParsed.lapam.metopackcloud, jwtToken)
     } catch (e) {
         console.error(e)
     }
@@ -127,7 +112,7 @@ class EntandoLapamMetopack extends HTMLElement {
             this.render(runner)
         }
 
-        authRouter(requestedModule, keycloak.tokenParsed, proxy ? keycloak.token : undefined, unauthorizedAction, unauthenticatedAction, authorizedAction, proxy)
+        authRouter(requestedModule, keycloak.tokenParsed, proxy ? keycloak.token : undefined, unauthorizedAction, unauthenticatedAction, authorizedAction)
     }
 
     render(runner) {
@@ -152,4 +137,4 @@ class EntandoLapamMetopack extends HTMLElement {
     }
 }
 
-customElements.get('©') || customElements.define("entando-lapam-metopack", EntandoLapamMetopack)
+customElements.get('entando-lapam-metopack') || customElements.define("entando-lapam-metopack", EntandoLapamMetopack)

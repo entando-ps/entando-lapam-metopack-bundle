@@ -10,4 +10,4 @@
 
 
 <@wp.currentWidget param="config" configParam="modulo" var="modulo" />
-<entando-lapam-metopack modulo="${modulo}" proxy="true"></entando-lapam-metopack>
+<entando-lapam-metopack modulo="${modulo}"></entando-lapam-metopack>
