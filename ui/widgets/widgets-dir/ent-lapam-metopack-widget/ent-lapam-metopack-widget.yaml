@@ -1,7 +1,7 @@
 code: ent-lapam-metopack-MFE
 titles:
-  en: Entando Lapam MetopackEntandoConfig
-  it: Entando Lapam MetopackEntandoConfig
+  en: Entando Lapam Metopack
+  it: Entando Lapam Metopack
 group: free
 customUiPath: ent-lapam-metopack-widget.ftl
 configUi:
