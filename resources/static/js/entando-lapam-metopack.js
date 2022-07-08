@@ -41,7 +41,7 @@ function buildRunner(requestedModule, metopackConfig, jwtToken, proxy) {
     const connectionTokens = metopackConfig.connection.split(":")
     var moduloJwtToken = ""
     var pathToken = ""
-    if (proxy) {
+    if (proxy !== "false") {
         moduloJwtToken = "|" + jwtToken
         pathToken = "/lapam-ws"
         connectionTokens[0] = window.location.hostname
